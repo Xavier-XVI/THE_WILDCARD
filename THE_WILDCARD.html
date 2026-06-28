@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE WILDCARD — XVI · Business Discovery Agent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red-900:    #5a0000;
+      --red-800:    #7a0000;
+      --red-700:    #8B0000;
+      --red-600:    #a30000;
+      --red-500:    #c20000;
+      --red-400:    #e03030;
+      --red-bright: #ff3333;
+      --bg:         #0e0c0c;
+      --bg-card:    #161212;
+      --bg-raised:  #1d1818;
+      --border:     #2e2424;
+      --border-light: #3d2f2f;
+      --text-primary:   #f0ebe8;
+      --text-secondary: #bdb0ac;
+      --text-muted:     #7a6868;
+      --text-dim:       #4a3a3a;
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-ui:      'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.85;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body > * { position: relative; z-index: 1; }
+
+    /* ── TOPBAR ─────────────────────────────────────────── */
+    .topbar {
+      width: 100%;
+      background: #0a0808;
+      border-bottom: 2px solid var(--red-700);
+      height: 72px;
+      padding: 0 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 24px rgba(139,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand-logo {
+      height: 42px;
+      width: auto;
+      filter: drop-shadow(0 0 10px rgba(194,0,0,0.5));
+    }
+
+    .brand-divider {
+      width: 2px;
+      height: 36px;
+      background: var(--red-700);
+      flex-shrink: 0;
+    }
+
+    .tool-name {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.18em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .tool-sub {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--red-600);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ── SECTION DIVIDER ────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red-800), transparent);
+      opacity: 0.7;
+      margin: 0.4rem 0 1.2rem;
+    }
+
+    /* ── SHARED SECTION STYLES ─────────────────────────── */
+    .sec-label {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      color: var(--red-bright);
+      text-shadow: 0 0 20px rgba(255,51,51,0.2);
+      border-bottom: 1px solid var(--red-900);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      padding: 96px 64px 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--red-600);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      line-height: 1.05;
+      max-width: 900px;
+      margin-bottom: 28px;
+    }
+
+    .hero-headline span {
+      color: var(--red-bright);
+      text-shadow: 0 0 28px rgba(255,51,51,0.3);
+    }
+
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+
+    .hero-sub strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      letter-spacing: 0.12em;
+      color: var(--text-primary);
+      background: var(--red-700);
+      border: 2px solid var(--red-600);
+      border-radius: 4px;
+      padding: 14px 40px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 250ms ease, border-color 250ms ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--red-600);
+      border-color: var(--red-500);
+    }
+
+    .btn-secondary {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 250ms ease, border-color 250ms ease;
+    }
+
+    .btn-secondary:hover {
+      color: var(--text-secondary);
+      border-color: var(--border-light);
+    }
+
+    /* ── PROBLEM ────────────────────────────────────────── */
+    .problem-section {
+      padding: 80px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .problem-callout {
+      background: linear-gradient(90deg, rgba(139,0,0,0.14) 0%, rgba(139,0,0,0.03) 60%);
+      border-left: 4px solid var(--red-700);
+      border-radius: 0 8px 8px 0;
+      padding: 24px 28px;
+      margin-bottom: 2rem;
+    }
+
+    .problem-callout .callout-label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--red-bright);
+      margin-bottom: 10px;
+    }
+
+    .problem-callout p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    .problem-callout p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .problem-body {
+      max-width: 780px;
+    }
+
+    .problem-body p {
+      margin-bottom: 1.2rem;
+      color: var(--text-secondary);
+    }
+
+    .problem-body p:last-child { margin-bottom: 0; }
+
+    /* ── SOLUTION ───────────────────────────────────────── */
+    .solution-section {
+      padding: 80px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Rounds timeline */
+    .rounds-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 2rem 0;
+      max-width: 760px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .round-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 1.1rem 1.6rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: background 200ms ease;
+    }
+
+    .round-row:last-child { border-bottom: none; }
+    .round-row:hover { background: var(--bg-raised); }
+
+    .round-num {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      color: var(--red-bright);
+      width: 48px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .round-content strong {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .round-content p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      transition: border-color 250ms ease;
+    }
+
+    .feature-card:hover { border-color: var(--border-light); }
+
+    .feature-label {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      color: var(--red-bright);
+      text-shadow: 0 0 16px rgba(255,51,51,0.15);
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .diff-block {
+      background: var(--bg-raised);
+      border: 1px solid var(--red-700);
+      border-left: 4px solid var(--red-500);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      margin-top: 2rem;
+      box-shadow: inset 0 0 28px rgba(139,0,0,0.06);
+    }
+
+    .diff-block .diff-label {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--red-600);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .diff-block p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    .diff-block p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── IMPACT ─────────────────────────────────────────── */
+    .impact-section {
+      padding: 80px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .impact-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 1.6rem;
+      max-width: 820px;
+    }
+
+    .impact-row {
+      display: flex;
+      gap: 20px;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .impact-row:last-child { border-bottom: none; }
+
+    .impact-icon {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--red-bright);
+      width: 32px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .impact-text strong {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .impact-text p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 2.4rem;
+    }
+
+    .ba-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+    }
+
+    .ba-label {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .ba-label.before { color: var(--text-muted); }
+    .ba-label.after  { color: var(--red-bright); }
+
+    .ba-card p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ── SECONDARY CTA ──────────────────────────────────── */
+    .cta-section {
+      padding: 96px 64px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .cta-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      max-width: 700px;
+    }
+
+    .cta-headline span { color: var(--red-bright); text-shadow: 0 0 24px rgba(255,51,51,0.3); }
+
+    .cta-sub {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      padding: 40px 64px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer::before, .footer::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .topbar { padding: 0 32px; }
+      .hero, .problem-section, .solution-section, .impact-section, .cta-section { padding-left: 32px; padding-right: 32px; }
+      .footer { padding-left: 32px; padding-right: 32px; }
+      .before-after { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 0 20px; height: 60px; }
+      .tool-name { font-size: 1.4rem; }
+      .hero, .problem-section, .solution-section, .impact-section, .cta-section { padding-left: 20px; padding-right: 20px; padding-top: 56px; padding-bottom: 56px; }
+      .footer { padding-left: 20px; padding-right: 20px; }
+      .hero-headline { font-size: 2.6rem; }
+      .cta-group { flex-direction: column; align-items: flex-start; }
+      .rounds-list { border-radius: 0; border-left: none; border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <img src="./xvi_logo.png" class="brand-logo" alt="XVI" style="height:42px;width:auto;filter:drop-shadow(0 0 10px rgba(194,0,0,0.5));">
+    <div class="brand-divider"></div>
+    <div>
+      <div class="tool-name">THE WILDCARD</div>
+      <div class="tool-sub">XVI · Business Discovery Agent</div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">For AI Consultants &amp; Automation Builders &nbsp;·&nbsp; Discovery Without the Calendar</p>
+    <h1 class="hero-headline">
+      The Bottleneck Isn't Information.<br>
+      It's the <span>Calendar Invite.</span>
+    </h1>
+    <p class="hero-sub">
+      Every AI engagement starts with discovery. Every discovery starts with a scheduled call.
+      <strong>The Wildcard runs the interview for you</strong> — async, domain-aware, prepared —
+      and delivers a build-ready spec without a single hour of synchronous time.
+    </p>
+    <div class="cta-group">
+      <a href="[YOUR_SIGNUP_URL]" class="btn-primary">Request Early Access</a>
+      <a href="#how-it-works" class="btn-secondary">See how it works →</a>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem-section" id="the-problem">
+    <p class="sec-label">The Problem</p>
+    <div class="section-divider"></div>
+
+    <div class="problem-callout">
+      <p class="callout-label">The Discovery Bottleneck</p>
+      <p>Every AI consulting engagement begins the same way: a discovery call. Then another. Then a follow-up to fill the gaps. <strong>By the time you understand how a client's business actually operates, you've spent three to five hours on video</strong> — and most of that time was scheduling, not building.</p>
+    </div>
+
+    <div class="problem-body">
+      <p>The problem isn't the conversation. The problem is what the conversation requires: a skilled interviewer who arrives prepared, knows the domain, asks the right follow-up, catches the contradiction, and pushes past the polished answer to the real one.</p>
+
+      <p>That person is hard to find, expensive to hire, and often unavailable at the moment you need them. So the consultant does it themselves — or the discovery is shallow, and the automation built from it reflects that.</p>
+
+      <p>Your client runs their practice out of three places: partial documentation, a scattered inbox, and their own head. Getting it out requires more than a questionnaire. It requires someone who already knows how these businesses work — who can hear "I usually send a follow-up email" and know to ask <em>when, how often, and what happens when they don't.</em></p>
+
+      <p><strong style="color: var(--text-primary)">Generic intake forms produce surface-level answers. Blank AI assistants ask what the website could answer. Live calls work — but they require timezone alignment, calendar negotiation, and synchrony that busy solopreneurs rarely have.</strong></p>
+
+      <p>The bottleneck isn't information. It's structured extraction — and it has been stuck behind a calendar invite for too long.</p>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section class="solution-section" id="how-it-works">
+    <p class="sec-label">What The Wildcard Does</p>
+    <div class="section-divider"></div>
+
+    <p style="max-width: 720px; margin-bottom: 2rem; font-size: 18px;">
+      The Wildcard runs a structured async discovery interview — arriving pre-loaded with the client's
+      public profile and domain knowledge, conducting five interview rounds, and delivering two
+      output formats ready for review and handoff.
+    </p>
+
+    <div class="rounds-list">
+      <div class="round-row">
+        <div class="round-num">R0</div>
+        <div class="round-content">
+          <strong>Artifact Collection</strong>
+          <p>Client shares any existing documents — contracts, templates, process notes. The agent reads them and adjusts every subsequent question accordingly. Never asks what the documents already answered.</p>
+        </div>
+      </div>
+      <div class="round-row">
+        <div class="round-num">R1</div>
+        <div class="round-content">
+          <strong>Business Snapshot</strong>
+          <p>Confirms what is already known from the client's public profile. Catches corrections. Establishes conversational rhythm. Never asks what the website could answer.</p>
+        </div>
+      </div>
+      <div class="round-row">
+        <div class="round-num">R2</div>
+        <div class="round-content">
+          <strong>Lead Journey</strong>
+          <p>Traces how someone goes from not knowing the client to showing up for a first conversation — using real recent examples, not ideal process descriptions.</p>
+        </div>
+      </div>
+      <div class="round-row">
+        <div class="round-num">R3</div>
+        <div class="round-content">
+          <strong>Delivery &amp; Intent</strong>
+          <p>Maps how the service is actually delivered and captures the job to be done: what the client's clients are really trying to change, and what success looks like six months later.</p>
+        </div>
+      </div>
+      <div class="round-row">
+        <div class="round-num">R4</div>
+        <div class="round-content">
+          <strong>Friction &amp; Reality</strong>
+          <p>Surfaces what breaks, what gets avoided, and what the client would automate first if they could. This is where the highest-value automation intelligence lives.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <p class="feature-label">Arrives Prepared</p>
+        <p>Domain knowledge is pre-loaded before the first message: business model, lead journey map, common tools stack. The agent uses this to ask informed questions and spot gaps a blank AI would miss.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-label">Scenario-Based Questions</p>
+        <p>"Walk me through the last person who reached out" — not "describe your lead generation process." Real examples produce real answers. Process descriptions produce ideal ones.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-label">Session Continuity</p>
+        <p>Clients can pause at any point and resume later. The agent tracks state automatically — no re-explaining, no restarting. One command saves everything.</p>
+      </div>
+      <div class="feature-card">
+        <p class="feature-label">Two Output Formats</p>
+        <p>A human-readable spec for consultant and client review. A builder-ready spec for direct handoff — structured field-by-field, gaps explicitly flagged, no interpretation required.</p>
+      </div>
+    </div>
+
+    <div class="diff-block">
+      <p class="diff-label">The Differentiator</p>
+      <p>Most discovery tools ask questions. <strong>The Wildcard knows what the answers should look like — and notices when they don't.</strong> It probes vague answers exactly once, catches contradictions warmly, and follows the thread the client didn't expect to pull. The methodology is explicit, named, and testable — not a black box.</p>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="impact-section" id="impact">
+    <p class="sec-label">What Changes</p>
+    <div class="section-divider"></div>
+
+    <div class="impact-rows">
+      <div class="impact-row">
+        <div class="impact-icon">01</div>
+        <div class="impact-text">
+          <strong>Discovery time cut to a fraction</strong>
+          <p>The 3–5 hours of synchronous calls compress into a single review session. The consultant's time goes to judgment and refinement — not extraction.</p>
+        </div>
+      </div>
+      <div class="impact-row">
+        <div class="impact-icon">02</div>
+        <div class="impact-text">
+          <strong>Deeper answers without more calls</strong>
+          <p>Scenario-based questions anchored to real recent examples consistently surface what live calls miss: the process that breaks, the task that gets avoided, the thing the client would fix first if they could.</p>
+        </div>
+      </div>
+      <div class="impact-row">
+        <div class="impact-icon">03</div>
+        <div class="impact-text">
+          <strong>A spec the builder can actually use</strong>
+          <p>The builder-ready output is structured field-by-field, confirmed information clearly marked, gaps explicitly flagged. No interpretation required. No follow-up calls to clarify what the consultant meant.</p>
+        </div>
+      </div>
+      <div class="impact-row">
+        <div class="impact-icon">04</div>
+        <div class="impact-text">
+          <strong>The client learns something too</strong>
+          <p>The most consistent outcome: clients say they have never explained their business that clearly before — and learned something about how it actually runs in the process.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="before-after">
+      <div class="ba-card">
+        <p class="ba-label before">Before The Wildcard</p>
+        <p>Schedule a call. Client reschedules. Call runs long, covers two-thirds of the agenda. Follow-up to fill the gaps. Three to five hours over days or weeks. Output: consultant notes that still need interpretation before a builder can act.</p>
+      </div>
+      <div class="ba-card">
+        <p class="ba-label after">After The Wildcard</p>
+        <p>Client completes the interview on their schedule. Consultant receives a human-readable spec ready for a 30-minute review and a builder-ready spec for direct handoff. Scheduled calls shrink, sharpen, and start from a complete picture.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECONDARY CTA -->
+  <section class="cta-section">
+    <h2 class="cta-headline">
+      Stop doing discovery<br><span>by hand.</span>
+    </h2>
+    <p class="cta-sub">
+      The Wildcard is in early access. Request access and run your first async discovery session — no calls scheduled, no calendar negotiation required.
+    </p>
+    <div class="cta-group">
+      <a href="[YOUR_SIGNUP_URL]" class="btn-primary">Request Early Access</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    THE WILDCARD &nbsp;·&nbsp; XVI &nbsp;·&nbsp; Business Discovery Agent &nbsp;·&nbsp; Built for AI Consultants
+  </footer>
+
+</body>
+</html>
